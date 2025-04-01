@@ -1,8 +1,6 @@
 module dynatrace.com/easytrade/pricing-service
 
-go 1.23.4
-
-godebug x509negativeserial=1
+go 1.23
 
 require (
 	github.com/gin-gonic/gin v1.10.0

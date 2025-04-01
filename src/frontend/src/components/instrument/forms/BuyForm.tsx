@@ -1,4 +1,3 @@
-import React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UseFormSetValue, useForm } from "react-hook-form"
 import { FormContainer } from "react-hook-form-mui"
@@ -84,7 +83,9 @@ function BuyAutofillButton({
 }
 
 export default function BuyForm() {
-    const { balance } = useAuthUserData()
+    const authUserData = useAuthUserData()
+    const user = authUserData.user,
+        balance = authUserData.balance
     const { instrument, buyHandler } = useInstrument()
 
     const formContext = useForm<FormData>({
@@ -131,14 +132,14 @@ export default function BuyForm() {
         onSuccess: async () => {
             setSuccess("Transaction scheduled")
             reset()
-            await transactionInvalidateQuery(queryClient)
+            transactionInvalidateQuery(queryClient)
         },
         onError: setError,
     })
 
     return (
         <FormContainer
-            onSuccess={(data: FormData) => mutate(data)}
+            onSuccess={async (data: FormData) => mutate(data)}
             formContext={formContext}
         >
             <Stack direction={"column"} spacing={2} minWidth={300}>

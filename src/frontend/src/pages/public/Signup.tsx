@@ -1,4 +1,3 @@
-import React from "react"
 import { Card, CardContent, Link, Stack } from "@mui/material"
 import { Link as RouterLink } from "react-router"
 import { signup } from "../../api/signup/signup"

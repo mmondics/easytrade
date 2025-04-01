@@ -1,10 +1,9 @@
-import React from "react"
 import {
     createBrowserRouter,
     createRoutesFromElements,
     Route,
 } from "react-router"
-import ProviderLayout from "./layouts/ProviderLayout"
+import AppLayout from "./layouts/AppLayout"
 import ProtectedLayout from "./layouts/ProtectedLayout"
 import PublicLayout from "./layouts/PublicLayout"
 import Login from "./pages/public/Login"
@@ -53,7 +52,7 @@ export enum LoaderIds {
 }
 
 const elementRoutes = createRoutesFromElements(
-    <Route path="/" element={<ProviderLayout />} errorElement={<ErrorPage />}>
+    <Route path="/" element={<AppLayout />} errorElement={<ErrorPage />}>
         <Route index element={<BaseNavigation />} />
         <Route path="*" element={<BaseNavigation />} />
         <Route path="feature-flags" element={<FeatureFlags />} />

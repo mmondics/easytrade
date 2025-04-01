@@ -16,8 +16,8 @@ namespace easyTradeManager.Models
         public string Email { get; set; }
         public string HashedPassword { get; set; }
         public string Origin { get; set; }
-        public DateTimeOffset CreationDate { get; set; }
-        public DateTimeOffset PackageActivationDate { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime PackageActivationDate { get; set; }
         public Boolean AccountActive { get; set; }
         public string Address { get; set; }
     }

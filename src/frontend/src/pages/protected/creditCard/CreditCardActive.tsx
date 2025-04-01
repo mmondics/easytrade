@@ -1,4 +1,3 @@
-import React from "react"
 import { Button, Card, CardContent, Stack, Typography } from "@mui/material"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useAuthUser } from "../../../contexts/UserContext/context"

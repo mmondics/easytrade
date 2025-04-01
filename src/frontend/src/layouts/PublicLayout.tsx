@@ -1,4 +1,3 @@
-import React from "react"
 import { Box } from "@mui/material"
 import { Navigate, Outlet } from "react-router"
 import { useAuth } from "../contexts/AuthContext/context"

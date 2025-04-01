@@ -1,4 +1,3 @@
-import React from "react"
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
 import {
@@ -17,10 +16,10 @@ function TestComponent() {
     )
 }
 
-test("context can be use without provider", () => {
+test("context can be use without provider", async () => {
     render(<TestComponent />)
 })
-test("uses theme set in provider", () => {
+test("uses theme set in provider", async () => {
     render(
         <ThemeProvider initialTheme="light">
             <TestComponent />

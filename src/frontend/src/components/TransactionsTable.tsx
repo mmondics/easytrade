@@ -1,4 +1,3 @@
-import React from "react"
 import {
     DataGrid,
     GridColDef,
@@ -39,8 +38,7 @@ function getColumnData(
             flex: 1.5,
             align: "center",
             headerAlign: "center",
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            renderCell: (params: GridRenderCellParams<any, string>) => (
+            renderCell: (params: GridRenderCellParams<any, String>) => (
                 <Stack direction={"row"}>
                     {params.value === "ACTIVE" ? (
                         <AutorenewIcon fontSize="small" color="info" />
@@ -145,6 +143,7 @@ export default function TransactionsTable({
             rows={transactions}
             columns={getColumnData(formatCurrency, formatDate)}
             slots={{ toolbar: CustomToolbar }}
+            autoHeight={true}
             initialState={{
                 pagination: { paginationModel: { pageSize: 5 } },
             }}

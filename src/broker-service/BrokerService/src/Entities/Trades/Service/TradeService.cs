@@ -6,6 +6,7 @@ using EasyTrade.BrokerService.Entities.Trades.Repository;
 using EasyTrade.BrokerService.ExceptionHandling.Exceptions;
 using EasyTrade.BrokerService.Helpers;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace EasyTrade.BrokerService.Entities.Trades.Service;
 
@@ -91,10 +92,10 @@ public class TradeService(
         await _tradeRepository.BeginTransaction();
 
         var trade = Trade.QuickTrade(accountId, instrumentId, ActionType.Buy, price, amount);
+
         _tradeRepository.AddTrade(trade);
         await UpdateBalance(balance, cost, product.Ppt, ActionType.Buy);
         await UpdateOwnedInstrument(accountId, instrumentId, amount);
-
         await SaveChangesOrRollback();
 
         return trade;

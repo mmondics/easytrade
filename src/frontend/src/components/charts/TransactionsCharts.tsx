@@ -1,4 +1,3 @@
-import React from "react"
 import { Transaction } from "../../api/transaction/types"
 import { Stack } from "@mui/material"
 import TransactionsPieChart from "./TransactionsPieChart"

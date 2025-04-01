@@ -1,4 +1,3 @@
-import React from "react"
 import {
     Bar,
     BarChart,
@@ -62,13 +61,11 @@ function CustomTooltip({
     payload,
     label,
 }: TooltipProps<number, string>) {
-    if (active && payload && payload.length > 0) {
-        /* eslint-disable */
-        const [openPrice, closePrice] = payload[0]?.payload?.openClosePriceRange
+    if (active && payload && payload.length) {
+        const [openPrice, closePrice] = payload[0].payload.openClosePriceRange
         const [lowPrice, highPrice] = payload[0].payload.lowHighPriceRange
-        /* eslint-enable */
         return (
-            <Box>
+            <Box data-dt-mouse-over="300">
                 <Typography variant="h6">{label}</Typography>
                 <Typography variant="body1">{`open: ${openPrice}; close: ${closePrice} `}</Typography>
                 <Typography variant="body1">{`low: ${lowPrice}; high: ${highPrice}`}</Typography>
@@ -104,7 +101,6 @@ export default function InstrumentPriceChart({
             width="100%"
             display={"flex"}
             justifyContent={"center"}
-            data-dt-mouse-over="300"
         >
             <ResponsiveContainer width="90%" height="100%">
                 <BarChart data={priceData}>
@@ -117,7 +113,7 @@ export default function InstrumentPriceChart({
                             maxValue + 0.01 * minValue,
                         ]}
                         allowDataOverflow={false}
-                        tickFormatter={(tick: number) => tick.toFixed(3)}
+                        tickFormatter={(tick) => tick.toFixed(3)}
                     />
                     <Tooltip
                         content={<CustomTooltip />}
@@ -132,7 +128,6 @@ export default function InstrumentPriceChart({
                         dataKey="lowHighPriceRange"
                         barSize={1}
                         xAxisId={0}
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         shape={(props: any) => (
                             <CustomBar
                                 {...props}
@@ -145,7 +140,6 @@ export default function InstrumentPriceChart({
                         dataKey="openClosePriceRange"
                         xAxisId={1}
                         minPointSize={1}
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         shape={(props: any) => (
                             <CustomBar
                                 {...props}

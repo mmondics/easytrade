@@ -7,4 +7,7 @@ done
 
 echo "Rabbit MQ is up!"
 
-./consumeCandleData
+# ./consumeCandleData
+
+# just keep the container running...
+exec tail -f /dev/null

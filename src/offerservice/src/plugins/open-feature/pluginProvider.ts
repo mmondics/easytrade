@@ -5,7 +5,7 @@ import {
     Logger,
     Provider,
     ResolutionDetails,
-} from "@openfeature/server-sdk"
+} from "@openfeature/js-sdk"
 import { FeatureFlagClient } from "../feature-flag/client"
 export class PluginProvider implements Provider {
     private featureFlagClient = new FeatureFlagClient()

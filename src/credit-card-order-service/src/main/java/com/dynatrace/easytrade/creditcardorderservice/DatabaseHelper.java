@@ -13,21 +13,22 @@ import org.slf4j.LoggerFactory;
 import java.util.Optional;
 
 public class DatabaseHelper {
-    private final String INSERT_ORDER_QUERY = "INSERT INTO [dbo].[CreditCardOrders] ([Id], [AccountId], [Email], [Name], [ShippingAddress], [CardLevel]) VALUES (?, ?, ?, ?, ?, ?)";
-    private final String INSERT_STATUS_QUERY = "INSERT INTO [dbo].[CreditCardOrderStatus] ([CreditCardOrderId], [Timestamp], [Status], [Details]) VALUES (?, ?, ?, ?)";
-    private final String INSERT_CREDIT_CARD_QUERY = "INSERT INTO [dbo].[CreditCards] ([CreditCardOrderId], [Level], [Number], [Cvs], [ValidDate]) VALUES (?, ?, ?, ?, ?)";
+    private final String INSERT_ORDER_QUERY = "INSERT INTO CreditCardOrders (Id, AccountId, Email, Name, ShippingAddress, CardLevel) VALUES (?, ?, ?, ?, ?, ?)";
+    private final String INSERT_STATUS_QUERY = "INSERT INTO CreditCardOrderStatus (CreditCardOrderId, Timestamp, Status, Details) VALUES (?, ?, ?, ?)";
+    private final String INSERT_CREDIT_CARD_QUERY = "INSERT INTO CreditCards (CreditCardOrderId, Level, Number, Cvs, ValidDate) VALUES (?, ?, ?, ?, ?)";
     private final String UPDATE_ORDER_QUERY = "UPDATE CreditCardOrders SET ShippingId = ? WHERE Id = ?";
     private final String COUNT_ORDER_BY_ACCOUNT_ID_QUERY = "SELECT COUNT(*) FROM CreditCardOrders WHERE AccountId = ?";
     private final String SHIPPING_ADDRESS_DATA_QUERY = "SELECT Name, Email, ShippingAddress FROM CreditCardOrders WHERE Id = ?";
     private final String CC_MANUFACTURE_DETAILS_QUERY = "SELECT Id, Name, CardLevel FROM CreditCardOrders WHERE Id = ?";
     private final String GET_ORDER_BY_ACCOUNT_ID = "SELECT Id FROM CreditCardOrders WHERE AccountId = ?";
-    private final String GET_LAST_STATUS_QUERY = "SELECT TOP 1 * FROM CreditCardOrderStatus WHERE CreditCardOrderId = ? ORDER BY Timestamp DESC";
+    private final String GET_LAST_STATUS_QUERY = "SELECT * FROM CreditCardOrderStatus WHERE CreditCardOrderId = ? ORDER BY Timestamp DESC LIMIT 1";
     private final String GET_STATUS_LIST_QUERY = "SELECT * FROM CreditCardOrderStatus WHERE CreditCardOrderId = ? ORDER BY Timestamp DESC";
-    private final String GET_LAST_STATUS_BY_ACCOUNT_ID_QUERY = "SELECT TOP 1 * FROM CreditCardOrderStatus ccos WHERE ccos.CreditCardOrderId = (SELECT cco.Id FROM CreditCardOrders cco WHERE cco.AccountId = ?) ORDER BY Timestamp DESC";
+    private final String GET_LAST_STATUS_BY_ACCOUNT_ID_QUERY = "SELECT * FROM CreditCardOrderStatus ccos WHERE ccos.CreditCardOrderId = (SELECT cco.Id FROM CreditCardOrders cco WHERE cco.AccountId = ?) ORDER BY Timestamp DESC LIMIT 1";
     private final String DELETE_ORDER_STATUS_BY_ACCOUNT_ID_QUERY = "DELETE FROM CreditCardOrderStatus WHERE CreditCardOrderId = (SELECT y.Id FROM CreditCardOrders y WHERE y.AccountId = ?)";
     private final String DELETE_CREDIT_CARD_BY_ACCOUNT_ID_QUERY = "DELETE FROM CreditCards WHERE CreditCardOrderId = (SELECT y.Id FROM CreditCardOrders y WHERE y.AccountId = ?)";
     private final String DELETE_ORDER_BY_ACCOUNT_ID_QUERY = "DELETE FROM CreditCardOrders WHERE AccountId = ?";
-    private final String GET_ORDER_ID_AND_CURRENT_STATUS = "select x.CreditCardOrderId, x.Status from CreditCardOrderStatus x inner join (select max(Id) Id, CreditCardOrderId from CreditCardOrderStatus group by CreditCardOrderId) y on x.CreditCardOrderId = y.CreditCardOrderId and x.Id = y.Id";
+    private final String GET_ORDER_ID_AND_CURRENT_STATUS = "SELECT x.CreditCardOrderId, x.Status FROM CreditCardOrderStatus x INNER JOIN (SELECT MAX(Id) AS Id, CreditCardOrderId FROM CreditCardOrderStatus GROUP BY CreditCardOrderId) y ON x.CreditCardOrderId = y.CreditCardOrderId AND x.Id = y.Id";
+
     private static final Logger logger = LoggerFactory.getLogger(DatabaseHelper.class);
 
     public String insertNewOrder(Connection conn, CreditCardOrderRequest request) throws SQLException {
@@ -200,7 +201,7 @@ public class DatabaseHelper {
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(System.getenv("MSSQL_CONNECTIONSTRING"));
+        return DriverManager.getConnection(System.getenv("MYSQL_CONNECTIONSTRING"));
     }
 
     public Optional<CreditCardOrderStatus> getLastOrderStatusForAccountId(Connection conn, Integer accountId)

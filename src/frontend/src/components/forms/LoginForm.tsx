@@ -1,4 +1,3 @@
-import React from "react"
 import { Button, CardActions } from "@mui/material"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -55,7 +54,7 @@ export default function LoginForm({ submitHandler }: LoginFormProps) {
 
     return (
         <FormContainer
-            onSuccess={(data: FormData) => mutate(data)}
+            onSuccess={async (data: FormData) => mutate(data)}
             formContext={formContext}
         >
             <Stack direction={"column"} spacing={2}>

@@ -2,8 +2,6 @@ import { Balance, PresetUser, User } from "./types"
 import axios from "axios"
 import { backends } from "../backend"
 
-const packages: { [k: number]: string } = { 1: "Starter", 2: "Light", 3: "Pro" }
-
 export async function getUser(userId: string): Promise<User> {
     console.log(`[getUser] API call with userId [${userId}]`)
 
@@ -14,7 +12,7 @@ export async function getUser(userId: string): Promise<User> {
             id: data.id.toString(),
             firstName: data.firstName,
             lastName: data.lastName,
-            packageType: packages[data.packageId] ?? data.packageId.toString(),
+            packageType: data.packageId.toString(),
             email: data.email,
             address: data.address,
         }

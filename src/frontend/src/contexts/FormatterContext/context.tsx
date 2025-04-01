@@ -1,5 +1,4 @@
-import React from "react"
-import { PropsWithChildren, createContext, useContext } from "react"
+import { PropsWithChildren, createContext, useContext, useState } from "react"
 import { FormatterProviderProps, IFormatterContext } from "./types"
 
 const milisecondsInMinute = 60 * 1000

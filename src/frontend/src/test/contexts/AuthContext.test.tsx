@@ -1,4 +1,3 @@
-import React from "react"
 import "@testing-library/jest-dom"
 import { render, screen } from "@testing-library/react"
 import { AuthProvider, useAuth, localStore } from "../../contexts/AuthContext"
@@ -14,8 +13,10 @@ function ContextTestComponent() {
     } = useAuth()
     return (
         <>
-            <button onClick={() => void loginHandler("", "")}>login</button>
-            <button onClick={() => void logoutHandler(`${userId}`)}>
+            <button onClick={async () => await loginHandler("", "")}>
+                login
+            </button>
+            <button onClick={async () => await logoutHandler(`${userId}`)}>
                 logout
             </button>
             <button onClick={() => defaultLoginHandler("1")}>
@@ -30,7 +31,7 @@ function ContextTestComponent() {
     )
 }
 
-test("context provides null when user not logged in", () => {
+test("context provides null when user not logged in", async () => {
     render(
         <AuthProvider
             loginHandler={vi.fn()}
@@ -43,7 +44,7 @@ test("context provides null when user not logged in", () => {
     expect(screen.getByText(/user is null/i)).toBeInTheDocument()
 })
 
-test("context provides user id when user logged in", () => {
+test("context provides user id when user logged in", async () => {
     render(
         <AuthProvider
             loginHandler={vi.fn()}
@@ -61,7 +62,7 @@ test("sets user id when user successfully logs in", async () => {
     const user = userEvent.setup()
     render(
         <AuthProvider
-            loginHandler={vi.fn(() => Promise.resolve({ id: "1" }))}
+            loginHandler={vi.fn(async () => ({ id: "1" }))}
             logoutHandler={vi.fn()}
             storeHandler={localStore}
         >
@@ -77,7 +78,7 @@ test("sets user id to null when user fails to log in", async () => {
     const user = userEvent.setup()
     render(
         <AuthProvider
-            loginHandler={vi.fn(() => Promise.resolve({ error: "error" }))}
+            loginHandler={vi.fn(async () => ({ error: "error" }))}
             logoutHandler={vi.fn()}
             storeHandler={localStore}
         >
@@ -94,11 +95,9 @@ test("sets user id to null when user logs out", async () => {
     render(
         <AuthProvider
             loginHandler={vi.fn()}
-            logoutHandler={vi.fn(() =>
-                Promise.resolve({
-                    message: "logged out",
-                })
-            )}
+            logoutHandler={vi.fn(async (userId: string) => ({
+                message: "logged out",
+            }))}
             initialId={"1"}
             storeHandler={localStore}
         >

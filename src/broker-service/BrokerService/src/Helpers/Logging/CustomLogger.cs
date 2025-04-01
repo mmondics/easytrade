@@ -32,7 +32,7 @@ public sealed class CustomLogger : ILogger
         {
             ConsoleColor originalColor = Console.ForegroundColor;
 
-            var timestamp = DateTimeOffset.Now.ToString(config.TimestampFormat);
+            var timestamp = DateTime.UtcNow.ToString(config.TimestampFormat);
             var callerName = config.SimplifiedNames ? _name.Split('.').Last() : _name;
             callerName = callerName.Replace(config.SkipString, string.Empty);
 

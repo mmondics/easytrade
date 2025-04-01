@@ -27,7 +27,7 @@ public class TradeTests
         const int userId = 2;
         const int ownerId = 1;
         const decimal balance = 10000;
-        var time = DateTimeOffset.Now;
+        var time = DateTime.UtcNow;
         const decimal quantity1 = 1.5M,
             quantity2 = 8,
             baseQuantity1 = 2;
@@ -92,7 +92,7 @@ public class TradeTests
         const int userId = 2;
         const int ownerId = 1;
         const decimal balance = 10000;
-        var time = DateTimeOffset.Now;
+        var time = DateTime.UtcNow;
         const decimal quantity1 = 1.5M,
             quantity2 = 8;
         const decimal baseQuantity1 = 2,
@@ -235,7 +235,7 @@ public class TradeTests
         Balance[] balances = { new Balance(userId, 3) };
         Instrument[] instruments = { new Instrument(1, 1, "code1", "name1", "desc1") };
         Product[] products = { new Product(1, "prod1", 2.5M, "curr1") };
-        Price[] prices = { new Price(1, DateTimeOffset.Now, 3, 5, 1, 4.5M), };
+        Price[] prices = { new Price(1, DateTime.UtcNow, 3, 5, 1, 4.5M), };
         var tradeService = BuildFakeTradeService(
             balances,
             Array.Empty<BalanceHistory>(),
@@ -266,13 +266,13 @@ public class TradeTests
         };
         OwnedInstrument[] ownedInstruments =
         {
-            new OwnedInstrument(userId, 1, baseQuantity1, DateTimeOffset.Now)
+            new OwnedInstrument(userId, 1, baseQuantity1, DateTime.UtcNow)
         };
         Product[] products = { new Product(1, "prod1", 2.5M, "curr1") };
         Price[] prices =
         {
-            new Price(1, DateTimeOffset.Now, 3, 5, 1, 4.5M),
-            new Price(2, DateTimeOffset.Now, 3, 5, 1, 4.5M)
+            new Price(1, DateTime.UtcNow, 3, 5, 1, 4.5M),
+            new Price(2, DateTime.UtcNow, 3, 5, 1, 4.5M)
         };
         var tradeService = BuildFakeTradeService(
             balances,

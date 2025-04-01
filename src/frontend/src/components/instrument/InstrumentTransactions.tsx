@@ -1,4 +1,3 @@
-import React from "react"
 import { TabContext, TabList, TabPanel } from "@mui/lab"
 import { Box, Card, Tab } from "@mui/material"
 import Grid from "@mui/material/Grid2"
@@ -39,9 +38,7 @@ export default function InstrumentTransactions() {
                 <Grid size={{ xs: 2 }}>
                     <Card>
                         <TabList
-                            onChange={(_event, value: FormId) =>
-                                setFormId(value)
-                            }
+                            onChange={(event, value) => setFormId(value)}
                             orientation="vertical"
                         >
                             <Tab label="Quick Buy" value={FormId.QuickBuy} />

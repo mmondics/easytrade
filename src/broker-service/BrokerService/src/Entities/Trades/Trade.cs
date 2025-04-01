@@ -1,57 +1,52 @@
-﻿using EasyTrade.BrokerService.Helpers;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using EasyTrade.BrokerService.Helpers;
 
 namespace EasyTrade.BrokerService.Entities.Trades;
 
-public class Trade(
-    int accountId,
-    int instrumentId,
-    string direction,
-    decimal quantity,
-    decimal entryPrice,
-    DateTimeOffset timestampOpen,
-    DateTimeOffset? timestampClose,
-    bool tradeClosed,
-    bool transactionHappened,
-    string status
-)
+public class Trade
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public int AccountId { get; set; } = accountId;
-    public int InstrumentId { get; set; } = instrumentId;
-    public string Direction { get; set; } = direction;
-    public decimal Quantity { get; set; } = quantity;
-    public decimal EntryPrice { get; set; } = entryPrice;
-    public DateTimeOffset TimestampOpen { get; set; } = timestampOpen;
-    public DateTimeOffset? TimestampClose { get; set; } = timestampClose;
-    public bool TradeClosed { get; set; } = tradeClosed;
-    public bool TransactionHappened { get; set; } = transactionHappened;
-    public string Status { get; set; } = status;
+    
+    public int AccountId { get; set; }
+    public int InstrumentId { get; set; }
+    public string Direction { get; set; } = string.Empty;
+    public decimal Quantity { get; set; }
+    public decimal EntryPrice { get; set; }
+    public DateTime TimestampOpen { get; set; }
+    public DateTime? TimestampClose { get; set; }
+    public bool TradeClosed { get; set; }
+    public bool TransactionHappened { get; set; }
+    public string Status { get; set; } = string.Empty;
+
+    public Trade() { }
 
     public Trade(
-        int id,
         int accountId,
         int instrumentId,
         string direction,
         decimal quantity,
         decimal entryPrice,
-        DateTimeOffset timestampOpen,
-        DateTimeOffset? timestampClose,
+        DateTime timestampOpen,
+        DateTime? timestampClose,
         bool tradeClosed,
         bool transactionHappened,
         string status
     )
-        : this(
-            accountId,
-            instrumentId,
-            direction,
-            quantity,
-            entryPrice,
-            timestampOpen,
-            timestampClose,
-            tradeClosed,
-            transactionHappened,
-            status
-        ) => Id = id;
+    {
+        AccountId = accountId;
+        InstrumentId = instrumentId;
+        Direction = direction;
+        Quantity = quantity;
+        EntryPrice = entryPrice;
+        TimestampOpen = timestampOpen;
+        TimestampClose = timestampClose;
+        TradeClosed = tradeClosed;
+        TransactionHappened = transactionHappened;
+        Status = status;
+    }
 
     public static Trade QuickTrade(
         int accountId,
@@ -66,11 +61,11 @@ public class Trade(
             direction.ToString().ToLower(),
             quantity,
             price,
-            DateTimeOffset.Now,
-            DateTimeOffset.Now,
+            DateTime.UtcNow,
+            DateTime.UtcNow,
             true,
             true,
-            "Instant " + direction.ToString() + " done."
+            "Instant " + direction + " done."
         );
 
     public static Trade LongTrade(
@@ -87,10 +82,10 @@ public class Trade(
             direction.ToString().ToLower(),
             quantity,
             price,
-            DateTimeOffset.Now,
-            DateTimeOffset.Now.AddHours(duration),
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddHours(duration),
             false,
             false,
-            direction.ToString() + " registered."
+            direction + " registered."
         );
 }

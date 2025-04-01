@@ -13,8 +13,8 @@ namespace easyTradeLoginService.Models
         public string Email { get; set; }
         public string HashedPassword { get; set; }
         public string Origin { get; set; }
-        public DateTimeOffset CreationDate { get; set; }
-        public DateTimeOffset PackageActivationDate { get; set; }
+        public DateTime CreationDate { get; set; }
+        public DateTime PackageActivationDate { get; set; }
         public Boolean AccountActive { get; set; }
         public string Address { get; set; }
 
@@ -31,8 +31,8 @@ namespace easyTradeLoginService.Models
             Email = accountRequest.Email;
             HashedPassword = accountRequest.HashedPassword;
             Origin = accountRequest.Origin;
-            CreationDate = DateTimeOffset.Now;
-            PackageActivationDate = DateTimeOffset.Now;
+            CreationDate = DateTime.Now;
+            PackageActivationDate = DateTime.Now;
             AccountActive = true;
             Address = accountRequest.Address;
         }
@@ -45,8 +45,8 @@ namespace easyTradeLoginService.Models
             Email = signupRequest.Email;
             HashedPassword = signupRequest.Password;
             Origin = signupRequest.Origin;
-            CreationDate = DateTimeOffset.Now;
-            PackageActivationDate = DateTimeOffset.Now;
+            CreationDate = DateTime.Now;
+            PackageActivationDate = DateTime.Now;
             AccountActive = true;
             Address = signupRequest.Address;
         }

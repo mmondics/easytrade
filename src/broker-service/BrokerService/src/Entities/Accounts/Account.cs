@@ -1,30 +1,26 @@
-﻿namespace EasyTrade.BrokerService.Entities.Accounts;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class Account(
-    int id,
-    int packageId,
-    string firstName,
-    string lastName,
-    string username,
-    string email,
-    string hashedPassword,
-    string origin,
-    DateTimeOffset creationDate,
-    DateTimeOffset packageActivationDate,
-    bool accountActive,
-    string address
-)
+namespace EasyTrade.BrokerService.Entities.Accounts;
+
+public class Account
 {
-    public int Id { get; set; } = id;
-    public int PackageId { get; set; } = packageId;
-    public string FirstName { get; set; } = firstName;
-    public string LastName { get; set; } = lastName;
-    public string Username { get; set; } = username;
-    public string Email { get; set; } = email;
-    public string HashedPassword { get; set; } = hashedPassword;
-    public string Origin { get; set; } = origin;
-    public DateTimeOffset CreationDate { get; set; } = creationDate;
-    public DateTimeOffset PackageActivationDate { get; set; } = packageActivationDate;
-    public bool AccountActive { get; set; } = accountActive;
-    public string Address { get; set; } = address;
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
+
+    public int PackageId { get; set; }
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
+    public string Username { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string HashedPassword { get; set; } = string.Empty;
+    public string Origin { get; set; } = string.Empty;
+    public DateTime CreationDate { get; set; }
+    public DateTime PackageActivationDate { get; set; }
+    public bool AccountActive { get; set; }
+    public string Address { get; set; } = string.Empty;
+
+    // Optional: parameterless constructor for EF Core
+    public Account() { }
 }

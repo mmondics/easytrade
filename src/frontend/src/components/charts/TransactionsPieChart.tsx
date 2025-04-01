@@ -1,4 +1,3 @@
-import React from "react"
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from "recharts"
 import { Typography } from "@mui/material"
 import { TransactionData } from "./TransactionsCharts"

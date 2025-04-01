@@ -18,7 +18,8 @@ dependencies {
 
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
-    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.8.1.jre11'
+    // Replace MSSQL driver with MySQL driver
+    implementation 'mysql:mysql-connector-java:8.0.33'
 
     implementation 'ch.qos.logback:logback-core:1.5.16'
     implementation 'ch.qos.logback:logback-classic:1.5.16'

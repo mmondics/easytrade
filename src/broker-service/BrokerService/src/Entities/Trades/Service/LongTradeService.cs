@@ -232,7 +232,7 @@ public class LongTradeService(
 
         await _tradeRepository
             .GetAllTrades()
-            .Where(x => !x.TradeClosed && x.TimestampClose < DateTimeOffset.Now)
+            .Where(x => !x.TradeClosed && x.TimestampClose < DateTime.UtcNow)
             .ForEachAsync(trade => CloseTrade(trade, "Time is up: trade failed", false));
     }
 

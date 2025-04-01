@@ -1,4 +1,3 @@
-import React from "react"
 import { Stack, Typography } from "@mui/material"
 import { Instrument } from "../../api/instrument/types"
 import PriceDisplay from "./PriceDisplay"

@@ -29,9 +29,10 @@ namespace easyTradeLoginService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration["MSSQL_CONNECTIONSTRING"];
+            var connectionString = Configuration["MYSQL_CONNECTIONSTRING"];
 
-            services.AddDbContext<AccountsDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<AccountsDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+
 
             services.AddControllers().AddJsonOptions(o =>
             {

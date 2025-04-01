@@ -1,4 +1,3 @@
-import React from "react"
 import { Typography, TypographyVariant } from "@mui/material"
 
 type variantOptions = TypographyVariant | "inherit"

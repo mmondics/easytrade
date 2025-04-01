@@ -7,19 +7,18 @@ import com.dynatrace.easytrade.contentcreator.SQLQueryProvider.Conditions;
 import java.util.NoSuchElementException;
 
 public enum SQLTables {
-    ACCOUNTS("[dbo].[Accounts]"),
-    BALANCE_HISTORY("[dbo].[Balancehistory]", "[ActionDate]"),
-    INSTRUMENTS("[dbo].[Instruments]"),
-    OWNED_INSTRUMENTS("[dbo].[Ownedinstruments]"),
-    PRICING("[dbo].[Pricing]", "[Timestamp]", "([Timestamp], [InstrumentId], [Open], [High], [Low], [Close])",
-            "(?, ?, ?, ?, ?, ?)"),
-    TRADES("[dbo].[Trades]", "[TimestampOpen]");
+    ACCOUNTS("Accounts"),
+    BALANCE_HISTORY("Balancehistory", "ActionDate"),
+    INSTRUMENTS("Instruments"),
+    OWNED_INSTRUMENTS("Ownedinstruments"),
+    PRICING("Pricing", "Timestamp", "(Timestamp, InstrumentId, Open, High, Low, Close)", "(?, ?, ?, ?, ?, ?)"),
+    TRADES("Trades", "TimestampOpen");
 
     private final String name;
     private final Optional<String> dateField;
     private final Optional<String> insertPattern;
     private final Optional<String> insertColumns;
-
+    
     SQLTables(String name, String dateField) {
         this.name = name;
         this.dateField = Optional.of(dateField);
@@ -63,7 +62,7 @@ public enum SQLTables {
      * @return String representing SQL query
      */
     public String getCountCheckQuery() {
-        return "SELECT COUNT(Id) AS [COUNT] FROM " + name;
+        return "SELECT COUNT(Id) AS COUNT FROM " + name;
     }
 
     /**
@@ -75,7 +74,7 @@ public enum SQLTables {
      * @return String representing SQL query
      */
     public String getCountCheckQuery(String conditionString) {
-        return "SELECT COUNT(Id) AS [COUNT] FROM " + name + " " + conditionString;
+        return "SELECT COUNT(Id) AS COUNT FROM " + name + " " + conditionString;
     }
 
     /**
@@ -85,11 +84,8 @@ public enum SQLTables {
      * @return
      */
     public String getDeleteTopQuery() {
-        if (dateField.isEmpty()) {
-            return "DELETE TOP (?) FROM " + name;
+        return "DELETE FROM " + name + " ORDER BY " + dateField.orElseThrow() + " LIMIT ?";
         }
-        return "WITH T AS (SELECT TOP (?) * FROM " + name + " ORDER BY " + dateField.get() + ") DELETE FROM T";
-    }
 
     /**
      * SQL that deletes top n rows
@@ -100,11 +96,7 @@ public enum SQLTables {
      * @return
      */
     public String getDeleteTopQuery(String conditionString) {
-        if (dateField.isEmpty()) {
-            return "DELETE TOP (?) FROM " + name;
-        }
-        return "WITH T AS (SELECT TOP (?) * FROM " + name + " " + conditionString + " ORDER BY " + dateField.get()
-                + ") DELETE FROM T";
+        return "DELETE FROM " + name + " " + conditionString + " ORDER BY " + dateField.orElseThrow() + " LIMIT ?";
     }
 
     public String getDeleteQuery() {

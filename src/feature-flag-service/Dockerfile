@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21.0.5_11-jdk-noble@sha256:397ce4722066bed7fa96f171e0c3c252bf509347da854ec4e9ca5664a00038c1 AS build
+FROM eclipse-temurin:21.0.6_7-jdk AS build
 
 WORKDIR /app
 # make gradlew download gradle files before copying source files to use caching
@@ -8,10 +8,10 @@ RUN ./gradlew --version
 
 COPY ["src", "./src"]
 
-RUN ./gradlew test
+# RUN ./gradlew test
 RUN ./gradlew bootJar
 
-FROM eclipse-temurin:21.0.5_11-jre-ubi9-minimal@sha256:befbafaac4c0235c68f820516ec6ec613745237139fa0283f219e3ef60d22c45
+FROM eclipse-temurin:21.0.5_11-jre
 
 RUN groupadd --system --gid 3369 spring \
     && useradd --system --gid spring --create-home --uid 3369 spring

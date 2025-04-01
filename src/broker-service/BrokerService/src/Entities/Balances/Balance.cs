@@ -5,11 +5,21 @@ using EasyTrade.BrokerService.ExceptionHandling.Exceptions;
 namespace EasyTrade.BrokerService.Entities.Balances;
 
 [Table("Balance")]
-public class Balance(int accountId, decimal value)
+public class Balance
 {
     [Key]
-    public int AccountId { get; set; } = accountId;
-    public decimal Value { get; set; } = value;
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int AccountId { get; set; }
+
+    public decimal Value { get; set; }
+
+    public Balance() { }
+
+    public Balance(int accountId, decimal value)
+    {
+        AccountId = accountId;
+        Value = value;
+    }
 
     public void Deposit(decimal amount)
     {
@@ -29,7 +39,7 @@ public class Balance(int accountId, decimal value)
         else if (amount > Value)
         {
             throw new NotEnoughMoneyException(
-                $"Not enought money to withdraw (missing {amount - Value})"
+                $"Not enough money to withdraw (missing {amount - Value})"
             );
         }
         Value -= amount;

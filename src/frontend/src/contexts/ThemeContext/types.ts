@@ -3,7 +3,6 @@ import { ThemeMode } from "./theme"
 
 type IThemeContext = {
     theme: Theme
-    themeMode: ThemeMode
     isDarkTheme: boolean
     toggleTheme: () => void
 }

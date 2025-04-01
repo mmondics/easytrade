@@ -36,7 +36,7 @@ public class HighCpuUsageMiddleware(
                 "[HighCpuUsage] problem enabled, adding extra [{}ms] wait to request",
                 _delayMs
             );
-            var end = DateTime.Now.Add(TimeSpan.FromMilliseconds(_delayMs));
+            var end = DateTime.UtcNow.Add(TimeSpan.FromMilliseconds(_delayMs));
 
             List<Task> tasks = new();
             for (int i = 0; i < _concurrency; i++)
@@ -63,7 +63,7 @@ public class HighCpuUsageMiddleware(
     [MethodImpl(MethodImplOptions.NoInlining)] // Inlining has to be disabled for this method to be shown in the call hierarchy
     public void NotMiningBitcoinLoop(DateTime end)
     {
-        while (DateTime.Now < end)
+        while (DateTime.UtcNow < end)
         {
             var number = _random.Next(100_000, 1_000_000);
             NotMiningBitcoin(number);

@@ -16,11 +16,11 @@ public class InstrumentTests
     private readonly Instrument[] _instruments;
     private readonly Product[] _products;
     private readonly Price[] _prices;
-    private readonly DateTimeOffset _time;
+    private readonly DateTime _time;
 
     public InstrumentTests()
     {
-        _time = DateTimeOffset.Now;
+        _time = DateTime.UtcNow;
         _instruments = new Instrument[]
         {
             new Instrument(1, 1, "code1", "name1", "desc1"),

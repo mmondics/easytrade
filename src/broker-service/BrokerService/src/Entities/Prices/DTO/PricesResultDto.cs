@@ -1,6 +1,10 @@
-﻿namespace EasyTrade.BrokerService.Entities.Prices.DTO;
+﻿using System.Text.Json.Serialization;
 
-public class PricesResultDto(IEnumerable<Price> results)
+namespace EasyTrade.BrokerService.Entities.Prices.DTO
 {
-    public IEnumerable<Price> Results { get; set; } = results;
+    public class PricesResultDto
+    {
+        [JsonPropertyName("results")]
+        public List<PriceDTO> Results { get; set; } = new();
+    }
 }

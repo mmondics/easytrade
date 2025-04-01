@@ -1,4 +1,3 @@
-import React from "react"
 import "@testing-library/jest-dom"
 import { screen, render } from "@testing-library/react"
 import { FormatterWrapper } from "../providers"
@@ -53,7 +52,7 @@ const mockTransactions: Transaction[] = [
 ]
 
 describe("Transactions table", () => {
-    test("displays full transaction data", () => {
+    test("displays full transaction data", async () => {
         render(
             <FormatterWrapper>
                 <TransactionsTable
@@ -85,7 +84,7 @@ describe("Transactions table", () => {
             })
         ).toBeInTheDocument()
     })
-    test("displays all rows", () => {
+    test("displays all rows", async () => {
         render(
             <FormatterWrapper>
                 <TransactionsTable

@@ -1,4 +1,7 @@
-﻿namespace EasyTrade.BrokerService.Entities.Prices.ServiceConnector;
+﻿using EasyTrade.BrokerService.Entities.Prices; // For Price class
+using EasyTrade.BrokerService.Entities.Prices.ServiceConnector; // For IPriceServiceConnector interface
+
+namespace EasyTrade.BrokerService.Entities.Prices.ServiceConnector;
 
 public interface IPriceServiceConnector
 {

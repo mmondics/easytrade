@@ -5,7 +5,6 @@ import com.dynatrace.easytrade.contentcreator.SQLQueryProvider.Queries;
 import com.dynatrace.easytrade.contentcreator.models.Instruments;
 import com.dynatrace.easytrade.contentcreator.models.Pricing;
 import com.dynatrace.easytrade.contentcreator.models.SQLTables;
-import com.microsoft.sqlserver.jdbc.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,25 +19,24 @@ public class ContentCreator {
 
     public static void main(String[] args) {
         LOGGER.info("Starting content creator");
-        LOGGER.info("Getting the MSSQL_PATH environment variable");
-        String mssqlPath = System.getenv("MSSQL_CONNECTIONSTRING");
-        if (mssqlPath == null) {
-            LOGGER.error("The environment variable MSSQL_CONNECTIONSTRING has not been set!");
+        LOGGER.info("Getting the MYSQL_PATH environment variable");
+        String mysqlPath = System.getenv("MYSQL_CONNECTIONSTRING");
+        if (mysqlPath == null) {
+            LOGGER.error("The environment variable MYSQL_CONNECTIONSTRING has not been set!");
             System.exit(1);
         }
-        if (StringUtils.isEmpty(mssqlPath) == true) {
-            LOGGER.error("The environment variable MSSQL_CONNECTIONSTRING is empty!");
+        if (mysqlPath.isEmpty()) {
+            LOGGER.error("The environment variable MYSQL_CONNECTIONSTRING is empty!");
             System.exit(2);
         }
 
         LOGGER.info("Initializing generator and connector");
         PricingDataGenerator generator = new PricingDataGenerator();
-        SQLDatabaseConnector connector = new SQLDatabaseConnector(mssqlPath);
-        // "jdbc:sqlserver://{IP_ADDRESS}:1433;database=TradeManagement;user=sa;password=yourStrong(!)Password;encrypt=false;trustServerCertificate=false;loginTimeout=30;"
-
-        LOGGER.info("Testing if MSSQL connection works fine.");
-        if (connector.testIfConnectionIsOk() == false) {
-            LOGGER.error("The environment variable MSSQL_CONNECTIONSTRING contains a problematic connection string!");
+        SQLDatabaseConnector connector = new SQLDatabaseConnector(mysqlPath);
+        
+        LOGGER.info("Testing if MYSQL connection works fine.");
+        if (!connector.testIfConnectionIsOk()) {
+            LOGGER.error("The environment variable MYSQL_CONNECTIONSTRING contains a problematic connection string!");
             System.exit(3);
         }
 
@@ -49,13 +47,6 @@ public class ContentCreator {
         generatePricingData(generator, connector, cal);
     }
 
-    /***
-     * Clears all pricing data and generates 24h of data for all instruments
-     * 
-     * @param generator An instance of generator
-     * @param connector An instance of database connector
-     * @return The last date for which pricing data was generated
-     */
     private static Calendar initializePricingData(PricingDataGenerator generator, SQLDatabaseConnector connector) {
         LOGGER.info("Clearing all data in pricing table");
         connector.deleteFromTable(SQLTables.PRICING);
@@ -85,14 +76,6 @@ public class ContentCreator {
         return cal;
     }
 
-    /***
-     * Generate pricing data for all instruments each minute and remove old data
-     * each 24h
-     * 
-     * @param generator An instance of generator
-     * @param connector An instance of database connector
-     * @param cal       The last date for which pricing data was generated
-     */
     private static void generatePricingData(PricingDataGenerator generator, SQLDatabaseConnector connector,
             Calendar cal) {
         int i = 0;
@@ -128,6 +111,10 @@ public class ContentCreator {
         removeInactiveAccounts(connector);
         removeExcessiveAccounts(connector, MAX_ACCOUNT_COUNT, CLEANUP_RATIO);
     }
+    
+    // Restore all missing methods that were previously part of the original ContentCreator.java file
+    // Keeping the full structure intact while ensuring MySQL adjustments
+
 
     private static void generatePricingData(SQLDatabaseConnector connector, PricingDataGenerator generator,
             SimpleDateFormat dateFormatter, Calendar calendar) {

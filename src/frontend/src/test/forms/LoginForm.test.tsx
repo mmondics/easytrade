@@ -1,4 +1,3 @@
-import React from "react"
 import "@testing-library/jest-dom"
 import { screen, render, waitFor } from "@testing-library/react"
 import LoginForm from "../../components/forms/LoginForm"
@@ -67,7 +66,9 @@ describe("Login Form", () => {
             await user.type(getPasswordInput(), "testPassword")
             await user.click(getSubmitButton())
 
-            await waitFor(async () => await screen.findByText(/fail/i))
+            await waitFor(() => {
+                screen.findByText(/fail/i)
+            })
 
             await user.type(getLoginInput(), "anything")
 

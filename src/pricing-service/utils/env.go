@@ -17,7 +17,7 @@ func CheckEnv() {
 	checkSingleEnv(RabbitmqUser)
 	checkSingleEnv(RabbitmqPassword)
 	checkSingleEnv(RabbitmqQueueName)
-	checkSingleEnv(MssqlConnectionString)
+	checkSingleEnv(MysqlConnectionString)
 }
 
 func checkSingleEnv(envName string) {

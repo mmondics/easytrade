@@ -1,4 +1,3 @@
-import React from "react"
 import { createContext, PropsWithChildren, useContext } from "react"
 import { sessionStore } from "./storage"
 import { AuthProviderProps, IAuthContext } from "./types"
@@ -30,7 +29,7 @@ export function AuthProvider({
         return { message, error }
     }
 
-    function defaultLogin(userId: string) {
+    async function defaultLogin(userId: string) {
         setUserId(userId)
     }
 

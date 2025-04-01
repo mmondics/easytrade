@@ -25,7 +25,7 @@ public class LongTradeTests
         //Arrange
         const int userId = 2;
         const decimal balance = 10000;
-        var time = DateTimeOffset.Now;
+        var time = DateTime.UtcNow;
         const decimal quantity1 = 1.5M,
             quantity2 = 8;
         const decimal baseQuantity1 = 2;
@@ -81,7 +81,7 @@ public class LongTradeTests
         //Arrange
         const int userId = 2;
         const decimal balance = 10000;
-        var time = DateTimeOffset.Now;
+        var time = DateTime.UtcNow;
         const decimal quantity1 = 1.5M,
             quantity2 = 8;
         const decimal baseQuantity1 = 2;
@@ -256,7 +256,7 @@ public class LongTradeTests
     public async Task CloseOverdueTrades_WithValidInput_ShouldCloseTrades()
     {
         // Arrange
-        var time = DateTimeOffset.Now;
+        var time = DateTime.UtcNow;
         Trade[] trades =
         {
             new Trade(
@@ -324,7 +324,7 @@ public class LongTradeTests
     public async Task ProcessLongRunningTransactions_WithValidInput_ShouldCompleteTransactions()
     {
         // Arrange
-        var time = DateTimeOffset.Now;
+        var time = DateTime.UtcNow;
         const int ownerId = 1,
             userId = 2;
         const int instrumentId = 1;

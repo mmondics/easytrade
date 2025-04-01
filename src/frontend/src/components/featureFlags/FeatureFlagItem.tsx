@@ -1,4 +1,3 @@
-import React from "react"
 import {
     Accordion,
     AccordionDetails,
@@ -54,7 +53,7 @@ export default function FeatureFlagItem({
         onMutate: () => {
             return { enabled: !enabled }
         },
-        onSuccess: async (_data, _vars, context) => {
+        onSuccess: async (data, vars, context) => {
             await queryClient.invalidateQueries({
                 queryKey: featureFlagKeys.problemPatterns,
                 exact: true,
@@ -66,7 +65,7 @@ export default function FeatureFlagItem({
                 } successfully.`,
             })
         },
-        onError: (error: string, _vars, context) => {
+        onError: async (error: string, vars, context) => {
             console.error(error)
             dispatchHandler({
                 type: "error",
@@ -170,7 +169,7 @@ export default function FeatureFlagItem({
                                 <Box>
                                     <IconButton
                                         onClick={() => {
-                                            void navigator.clipboard.writeText(
+                                            navigator.clipboard.writeText(
                                                 curlCommand
                                             )
                                             dispatchHandler({
@@ -195,6 +194,11 @@ export default function FeatureFlagItem({
                         <Tooltip
                             title="Managing flags on frontend has been disabled in this environment"
                             disableHoverListener={modifyDisabled}
+                            slotProps={{
+                                popper: {
+                                    "data-dt-mouse-over": "300",
+                                } as any,
+                            }}
                         >
                             <span>
                                 <Button
@@ -203,7 +207,6 @@ export default function FeatureFlagItem({
                                     variant="outlined"
                                     color={enabled ? "error" : "success"}
                                     disabled={modifyDisabled}
-                                    data-dt-mouse-over="300"
                                 >
                                     {enabled ? "Disable" : "Enable"}
                                 </Button>

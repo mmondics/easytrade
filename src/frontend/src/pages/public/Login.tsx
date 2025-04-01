@@ -1,4 +1,3 @@
-import React from "react"
 import { Card, Divider, Link, Stack, CardContent } from "@mui/material"
 import { Link as RouterLink, useLoaderData } from "react-router"
 import { PresetUser } from "../../api/user/types"
@@ -9,7 +8,7 @@ import { usePresetUsersQuery } from "../../contexts/QueryContext/user/hooks"
 
 export default function Login() {
     const { loginHandler, defaultLoginHandler } = useAuth()
-    const initialData: PresetUser[] = useLoaderData()
+    const initialData = useLoaderData() as PresetUser[]
     const { data } = usePresetUsersQuery(initialData)
 
     return (

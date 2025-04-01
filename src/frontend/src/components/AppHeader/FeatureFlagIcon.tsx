@@ -1,4 +1,3 @@
-import React from "react"
 import { Badge, IconButton } from "@mui/material"
 import FlagIcon from "@mui/icons-material/Flag"
 import { Link as RouterLink } from "react-router"

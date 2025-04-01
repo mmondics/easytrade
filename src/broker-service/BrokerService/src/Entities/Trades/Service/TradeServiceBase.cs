@@ -60,7 +60,7 @@ public abstract class TradeServiceBase(
         );
 
         ownedInstrument.Quantity += amount;
-        ownedInstrument.LastModificationDate = DateTimeOffset.Now;
+        ownedInstrument.LastModificationDate = DateTime.UtcNow;
         _instrumentRepository.UpdateOwnedInstrument(ownedInstrument);
     }
 

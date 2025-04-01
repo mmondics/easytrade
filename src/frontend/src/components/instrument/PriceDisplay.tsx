@@ -1,4 +1,3 @@
-import React from "react"
 import { Stack, Typography } from "@mui/material"
 import { Price } from "../../api/price/types"
 import { useFormatter } from "../../contexts/FormatterContext/context"

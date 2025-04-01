@@ -1,19 +1,41 @@
+using System.Text.Json.Serialization;
+using EasyTrade.BrokerService.Entities.Trades.Controllers;
+
 namespace EasyTrade.BrokerService.Entities.Prices.DTO;
 
-public class PriceDTO(
-    DateTimeOffset timestamp,
-    decimal open,
-    decimal close,
-    decimal low,
-    decimal high
-)
+public class PriceDTO
 {
-    public DateTimeOffset Timestamp { get; set; } = timestamp;
-    public decimal Open { get; set; } = open;
-    public decimal Close { get; set; } = close;
-    public decimal Low { get; set; } = low;
-    public decimal High { get; set; } = high;
+    [JsonPropertyName("instrumentId")]
+    public int InstrumentId { get; set; }
+
+    [JsonPropertyName("timestamp")]
+    [JsonConverter(typeof(CustomDateTimeConverter))]
+    public DateTime? Timestamp { get; set; }
+
+    [JsonPropertyName("open")]
+    public decimal Open { get; set; }
+
+    [JsonPropertyName("close")]
+    public decimal Close { get; set; }
+
+    [JsonPropertyName("low")]
+    public decimal Low { get; set; }
+
+    [JsonPropertyName("high")]
+    public decimal High { get; set; }
+
+    public PriceDTO() { }
 
     public PriceDTO(Price price)
-        : this(price.Timestamp, price.Open, price.Close, price.Low, price.High) { }
+    {
+        InstrumentId = price.InstrumentId;
+        Timestamp = price.Timestamp;
+        Open = price.Open;
+        Close = price.Close;
+        Low = price.Low;
+        High = price.High;
+    }
+
+    public Price ToEntity() =>
+        new Price(InstrumentId, Timestamp ?? DateTime.MinValue, Open, High, Low, Close);
 }

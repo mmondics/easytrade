@@ -1,4 +1,3 @@
-import React from "react"
 import {
     DataGrid,
     GridColDef,
@@ -58,7 +57,7 @@ function CustomToolbar() {
                 sx={{
                     width: "100%",
                 }}
-                data-dt-features="main-table,table-toolbar"
+                data-dt-feature="main-table,table-toolbar"
             >
                 <GridToolbarColumnsButton />
                 <GridToolbarFilterButton />
@@ -86,7 +85,7 @@ export default function InstrumentsTable({
             slots={{ toolbar: CustomToolbar }}
             hideFooter={true}
             disableVirtualization={disableVirtualization}
-            data-dt-features="main-table"
+            data-dt-feature="main-table"
         />
     )
 }

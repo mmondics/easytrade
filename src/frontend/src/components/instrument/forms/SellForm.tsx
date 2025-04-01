@@ -1,4 +1,3 @@
-import React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { UseFormSetValue, useForm } from "react-hook-form"
 import { FormContainer } from "react-hook-form-mui"
@@ -101,7 +100,7 @@ export default function SellForm() {
     }, [watch(["amount", "price"])])
 
     useEffect(() => {
-        const { unsubscribe } = watch((_data, { type }) => {
+        const { unsubscribe } = watch((data, { type }) => {
             if (type === "change") {
                 resetStatus()
             }
@@ -125,14 +124,14 @@ export default function SellForm() {
         onSuccess: async () => {
             setSuccess("Transaction scheduled")
             reset()
-            await transactionInvalidateQuery(queryClient)
+            transactionInvalidateQuery(queryClient)
         },
         onError: setError,
     })
 
     return (
         <FormContainer
-            onSuccess={(data: FormData) => mutate(data)}
+            onSuccess={async (data: FormData) => mutate(data)}
             formContext={formContext}
         >
             <Stack direction={"column"} spacing={2} minWidth={300}>

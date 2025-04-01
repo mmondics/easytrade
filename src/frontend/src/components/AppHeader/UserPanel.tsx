@@ -1,4 +1,3 @@
-import React from "react"
 import { Logout } from "@mui/icons-material"
 import {
     Avatar,
@@ -69,8 +68,8 @@ export default function UserPanel() {
             }
         },
         onMutate: handleClose,
-        onSuccess: () => {
-            logoutInvalidateQuery(queryClient)
+        onSuccess: async () => {
+            await logoutInvalidateQuery(queryClient)
         },
         onError: (error) => {
             console.error(`There was an error during logout: ${error}`)

@@ -75,8 +75,8 @@ http://SOMEWHERE/engine/api/swagger-ui/
 | `instrumentId`        | required | int            | Instrument ID   | Body JSON |
 | `quantity`            | required | double         | Quantity        | Body JSON |
 | `status`              | required | String         | Trade status    | Body JSON |
-| `timestampClose`      | required | OffsetDateTime | Close timestamp | Body JSON |
-| `timestampOpen`       | required | OffsetDateTime | Open timestamp  | Body JSON |
+| `timestampClose`      | required | LocalDateTime | Close timestamp | Body JSON |
+| `timestampOpen`       | required | LocalDateTime | Open timestamp  | Body JSON |
 | `tradeClosed`         | required | boolean        | Trade closed    | Body JSON |
 | `transactionHappened` | required | boolean        | Trade happened  | Body JSON |
 
