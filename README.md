@@ -1,8 +1,6 @@
 # EasyTrade
 
-A project consisting of many small services that connect to each other.  
-It is made like a stock broking application - it allows it's users to buy&sell some stocks/instruments.  
-Of course it is all fake data and the price has a 24 hour cycle...
+Sample stock trading application modified to run on both Intel/x86 (amd64) architecture as well as IBM LinuxONE (s390x).
 
 ## Architecture diagram
 
@@ -40,62 +38,26 @@ EasyTrade consists of the following services/components:
 
 > To learn more about endpoints / swagger for the services go to their respective readmes
 
-## Docker compose
+## OpenShift Instructions
 
-To run the easytrade using docker you can use provided `compose.yaml`.
-To use it you need to have:
-
-- Docker with minimal version **v20.10.13**
-  - you can follow [this](https://docs.docker.com/engine/install/ubuntu/) guide to update Docker
-  - this guide also covers installing Docker Compose Plugin
-- Docker Compose Plugin
-  ```bash
-  sudo apt update
-  sudo apt install docker-compose-plugin
-  ```
-  - more information in [this](https://docs.docker.com/compose/install/linux/) guide
-
-With this you can run
+To deploy on OpenShift:
 
 ```bash
-docker compose up
-# or to run in the background
-docker compose up -d
-```
+# Create the `easytrade` project
+oc new-project easytrade
 
-You should be able to access the app at `localhost:80` or simply `localhost`.
-
-> **NOTE:** It make take a few minutes for the app to stabilize, you may experience errors in the frontend or see missing data before that happens.
-
-> **NOTE:** Docker Compose V1 which came as a separate binary (`docker-compose`) will not work with this version. You can check this [guide](https://www.howtogeek.com/devops/how-to-upgrade-to-docker-compose-v2/) on how to upgrade.
-
-## Kubernetes instructions
-
-To deploy Easytrade in kubernetes you need to have:
-
-- `kubectl` tool installed
-  - here's a [guide](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) on how to get it
-- `kubeconfig` to access the cluster you want to deploy it on
-  - more info on it [here](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/)
-
-```bash
-# first create the namespace for it
-kubectl create namespace easytrade
+# Give the default user elevated credentials (don't do this in production 😊)
+oc -n easytrade adm policy add-scc-to-user anyuid -z default
 
 # then use the manifests to deploy
-kubectl -n easytrade apply -f ./kubernetes-manifests/release
+oc -n easytrade apply -f ./kubernetes-manifests/release-multiarch
 
 # Optional: if you want the problem patterns to be automatically
 # enabled once a day, deploy these manifests too
-kubectl -n easytrade apply -f ./kubernetes-manifests/problem-patterns
+# kubectl -n easytrade apply -f ./kubernetes-manifests/problem-patterns
 
-# to get the ip of reverse proxy
-# look for EXTERNAL-IP of frontendreverseproxy
-# it may take some time before it gets assigned
-kubectl -n easytrade get svc
-
-# to delete the deployment
-kubectl delete namespace easytrade
+# Expose the easytrade frontend service as a route 
+oc -n easytrade expose svc frontendreverseproxy-easytrade
 ```
 
 ## Where to start
@@ -146,33 +108,4 @@ You can also manage enabled problem patterns via the easyTrade frontend.
 
 > **NOTE:** More information on the feature flag service's parameters available in [feature flag service's doc](src/feature-flag-service/README.md).
 
-If you are deploying easyTrade on K8s, you can also apply [these cronjobs](./kubernetes-manifests/problem-patterns/), which will enable the problem patterns once a day.
-
-## EasyTrade on Dynatrace - how to configure
-
-All Dynatrace configuration required for Easytrade should be applied using [Monaco](https://github.com/Dynatrace/dynatrace-configuration-as-code). More information on how to deploy it can be found in the [`monaco` directory](./monaco).
-
-### Business events in Dynatrace
-
-EasyTrade application has been developed in order to showcase business events. Usually business events can be created in two ways:
-
-- directly - using one of Dynatrace SDKs in the code - so for example in Javascript or Java
-- indirectly - configure catch rules for request that are monitored by Dynatrace
-
-If you want to learn more about business events then we suggest looking at the information on our website: [Business event capture](https://www.dynatrace.com/support/help/platform-modules/business-analytics/ba-events-capturing). There you will find information on how to create events directly (with OpenKit, Javascript, Android and more) and indirectly with capture rules in Dynatrace.
-
-For those interested in creating capturing rules for easyTrade we suggest to have a look at the configuration exported with Monaco in this repository. Have a look at the [README](./monaco/README.md)
-
-## Body types
-
-EasyTrade network traffic is handled by REST requests using mostly JSON payloads. However, some of the services
-can also handle XML requests. Data types are negotiated based on `Accept` and `Content-Type` headers.
-
-#### XML compatible services
-
-| Service                                                           | Accepted XML MIME types                            |
-| ----------------------------------------------------------------- | -------------------------------------------------- |
-| [LoginService](src/loginservice/README.md)                        | `application/xml`; `text/xml`; `application/*+xml` |
-| [CreditCardOrderService](src/credit-card-order-service/README.md) | `application/xml`                                  |
-| [OfferService](src/offerservice/README.md)                        | `application/xml`; `text/xml`                      |
-| [PricingService](src/pricing-service/README.md)                   | `application/xml`                                  |
+You can also apply [these cronjobs](./kubernetes-manifests/problem-patterns/), which will enable the problem patterns once a day.
