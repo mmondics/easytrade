@@ -25,7 +25,7 @@ Swagger endpoint is available at:
 
 ```bash
 # when deployed with k8s
-http://SOMEWHERE/engine/api/swagger-ui/
+http://SOMEWHERE/engine/api/swagger-ui/index.html
 ```
 
 ### Endpoints
