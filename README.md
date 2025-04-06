@@ -60,6 +60,30 @@ oc -n easytrade apply -f ./kubernetes-manifests/release-multiarch
 oc -n easytrade expose svc frontendreverseproxy-easytrade
 ```
 
+## Kubernetes Instructions
+
+To deploy on Kubernetes: 
+
+```bash
+# first create the namespace for it
+kubectl create namespace easytrade
+
+# then use the manifests to deploy
+kubectl -n easytrade apply -f ./kubernetes-manifests/release-multiarch
+
+# Optional: if you want the problem patterns to be automatically
+# enabled once a day, deploy these manifests too
+# kubectl -n easytrade apply -f ./kubernetes-manifests/problem-patterns
+
+# to get the ip of reverse proxy
+# look for EXTERNAL-IP of frontendreverseproxy
+# it may take some time before it gets assigned
+kubectl -n easytrade get svc
+
+# to delete the deployment
+kubectl delete namespace easytrade
+```
+
 ## Where to start
 
 After starting easyTrade application you can:
