@@ -4,7 +4,7 @@ This directory contains YAML files that will deploy easytrade onto an OpenShift 
 
 The deployment YAML files specify which architecture node each microservice will deploy onto via nodeSelectors.
 
-Follow the instructions in the easytrade [README](README.md#openshift-instructions) making sure to specify the `release-mixed-arch` directory.
+Follow the instructions in the easytrade [README](../../README.md#openshift-instructions) making sure to specify the `release-mixed-arch` directory.
 
 | Service                                                              | Architecture |
 | -------------------------------------------------------------------- | ------------ |

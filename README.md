@@ -6,9 +6,9 @@ Sample stock trading application modified to run on both Intel/x86 (amd64) archi
 
 ![EasyTrade architecture](./img/architecture.jpg)
 
-## Database diagram
+<!-- ## Database diagram
 
-![EasyTrade database](./img/database.jpg)
+![EasyTrade database](./img/database.jpg) -->
 
 ## Service list
 
@@ -36,7 +36,28 @@ EasyTrade consists of the following services/components:
 | [RabbitMQ](src/rabbitmq/README.md)                                   | 80         | `---`                        |
 | [Third party service](src/third-party-service/README.md)             | 80         | `/third-party-service`       |
 
-> To learn more about endpoints / swagger for the services go to their respective readmes
+To learn more about endpoints / swagger for the services go to their respective readmes
+
+## Mixed-architecture Cluster
+This version of easyTrade can run on a mixed-architecture OpenShift cluster, i.e. one that has both amd64 and s390x compute nodes.
+
+```
+~ oc get no -l node-role.kubernetes.io/worker -L kubernetes.io/arch
+NAME                     STATUS   ROLES    AGE   VERSION            ARCH
+stg1.ma1.cpolab.local    Ready    worker   82d   v1.29.10+67d3387   amd64
+stg2.ma1.cpolab.local    Ready    worker   82d   v1.29.10+67d3387   amd64
+stg3.ma1.cpolab.local    Ready    worker   82d   v1.29.10+67d3387   amd64
+work1.ma1.cpolab.local   Ready    worker   82d   v1.29.10+67d3387   amd64
+work2.ma1.cpolab.local   Ready    worker   82d   v1.29.10+67d3387   amd64
+work3.ma1.cpolab.local   Ready    worker   82d   v1.29.10+67d3387   amd64
+work4.ma1.cpolab.local   Ready    worker   82d   v1.29.10+67d3387   amd64
+work5.ma1.cpolab.local   Ready    worker   57d   v1.29.10+67d3387   s390x
+work6.ma1.cpolab.local   Ready    worker   57d   v1.29.10+67d3387   s390x
+work7.ma1.cpolab.local   Ready    worker   57d   v1.29.10+67d3387   s390x
+work8.ma1.cpolab.local   Ready    worker   57d   v1.29.10+67d3387   s390x
+```
+
+Follow the instructions below and in the [README](kubernetes-manifests/release-mixed-arch/), making sure to specify the `release-mixed-arch` release.
 
 ## OpenShift Instructions
 
@@ -90,24 +111,23 @@ kubectl delete namespace easytrade
 
 After starting easyTrade application you can:
 
-- go to the frontend and try it out. Just go to the machines IP address, or "localhost" and you should see the login page. You can either create a new user, or use one of superusers (with easy passwords) like "demouser/demopass" or "specialuser/specialpass". Remember that in order to buy stocks you need money, so visit the deposit page first.
+- go to the frontend and try it out. Navigate to the OpenShift route and you should see the login page. You can either create a new user, or use one of superusers (with easy passwords) like "demouser/demopass" or "specialuser/specialpass". Remember that in order to buy stocks you need money, so visit the deposit page first.
 - go to some services swagger endpoint - you will find proper instructions in the dedicated service readmes.
-- after some time go to dynatrace to configure your application and see what is going on in easyTrade - to have it work you will need an agent on the machine where you started easyTrade :P
 
 ## EasyTrade users
 
 If you want to use easyTrade, then you will need a user. You can either:
 
-- use the existing user - he has some preinserted data and new data is being generated from time to time:
+- use an existing user - they have some preinserted data and new data is automatically generated:
 
   - login: james_norton
   - pass: pass_james_123
 
 - create a new user - click on "Sign up" on the login page and create a new user.
 
-> **NOTE:** After creating a new user there is no confirmation given, no email sent and you are not redirected... Just go back to login page and try to login. It should work :)
+> **NOTE:** After creating a new user there is no confirmation given, no email sent and you are not redirected... Just go back to login page and try to login.
 
-## Problem patterns
+<!-- ## Problem patterns
 
 Currently there are 4 problem patterns supported in easyTrade:
 
@@ -134,4 +154,4 @@ You can also manage enabled problem patterns via the easyTrade frontend.
 
 > **NOTE:** More information on the feature flag service's parameters available in [feature flag service's doc](src/feature-flag-service/README.md).
 
-You can also apply [these cronjobs](./kubernetes-manifests/problem-patterns/), which will enable the problem patterns once a day.
+You can also apply [these cronjobs](./kubernetes-manifests/problem-patterns/), which will enable the problem patterns once a day. -->
