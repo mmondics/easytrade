@@ -11,6 +11,7 @@ using System.Text.Json;
 using EasyTrade.BrokerService.Entities.Trades.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddBrokerServiceDependencyGroup();
 
 // Add services to the container.
 builder.Services.AddControllers()

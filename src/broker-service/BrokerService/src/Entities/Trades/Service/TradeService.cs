@@ -5,8 +5,8 @@ using EasyTrade.BrokerService.Entities.Products.Repository;
 using EasyTrade.BrokerService.Entities.Trades.Repository;
 using EasyTrade.BrokerService.ExceptionHandling.Exceptions;
 using EasyTrade.BrokerService.Helpers;
+using EasyTrade.BrokerService.Entities.Trades.Service;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace EasyTrade.BrokerService.Entities.Trades.Service;
 
@@ -16,6 +16,7 @@ public class TradeService(
     IPriceServiceConnector priceService,
     IProductRepository productRepository,
     ITradeRepository tradeRepository,
+    IFraudDetectionClient fraudDetectionClient,
     ILogger<TradeService> logger
 )
     : TradeServiceBase(
@@ -26,8 +27,14 @@ public class TradeService(
         tradeRepository,
         logger
     ),
-        ITradeService
+    ITradeService
 {
+    private readonly IFraudDetectionClient _fraudDetectionClient = fraudDetectionClient;
+
+    // ✅ Fraud detection enabled flag from environment variable
+    private readonly bool _fraudDetectionEnabled =
+        Environment.GetEnvironmentVariable("ENABLE_FRAUD_DETECTION")?.ToLower() == "true";
+
     public async Task<IEnumerable<Trade>> GetTradesOfAccount(
         int accountId,
         int count,
@@ -80,19 +87,38 @@ public class TradeService(
             ?? throw new InstrumentNotFoundException(instrumentId);
         var price = (await _priceService.GetLastPriceByInstrumentId(instrumentId))!.Open;
         var product = (await _productRepository.GetProduct(instrument.ProductId))!;
-
         var cost = amount * price;
         var totalCost = cost + product.Ppt;
+
         if (totalCost > balance.Value)
         {
             throw new NotEnoughMoneyException(
                 $"Not enough money to buy this asset (missing {totalCost - balance.Value})"
             );
         }
+
+        // 🧠 Fraud check before placing the trade
+        double fraudScore = 0;
+        if (_fraudDetectionEnabled)
+        {
+            fraudScore = await _fraudDetectionClient.ScoreTradeAsync(
+                accountId,
+                instrumentId,
+                success: true,
+                quantity: (double)amount,
+                price: (double)price,
+                totalValue: (double)cost,
+                hour: DateTime.UtcNow.Hour,
+                day: (int)DateTime.UtcNow.DayOfWeek,
+                isBuy: true
+            );
+
+            _logger.LogInformation("Fraud score for BuyAssets: {score}", fraudScore);
+        }
+
         await _tradeRepository.BeginTransaction();
 
         var trade = Trade.QuickTrade(accountId, instrumentId, ActionType.Buy, price, amount);
-
         _tradeRepository.AddTrade(trade);
         await UpdateBalance(balance, cost, product.Ppt, ActionType.Buy);
         await UpdateOwnedInstrument(accountId, instrumentId, amount);
@@ -128,14 +154,34 @@ public class TradeService(
         {
             throw new NotEnoughAssetsException();
         }
+
         var income = price * amount;
+
+        // 🧠 Fraud check before placing the trade
+        double fraudScore = 0;
+        if (_fraudDetectionEnabled)
+        {
+            fraudScore = await _fraudDetectionClient.ScoreTradeAsync(
+                accountId,
+                instrumentId,
+                success: true,
+                quantity: (double)amount,
+                price: (double)price,
+                totalValue: (double)income,
+                hour: DateTime.UtcNow.Hour,
+                day: (int)DateTime.UtcNow.DayOfWeek,
+                isBuy: false
+            );
+
+            _logger.LogInformation("Fraud score for SellAssets: {score}", fraudScore);
+        }
+
         await _tradeRepository.BeginTransaction();
 
         var trade = Trade.QuickTrade(accountId, instrumentId, ActionType.Sell, price, amount);
         _tradeRepository.AddTrade(trade);
         await UpdateBalance(balance, income, product.Ppt, ActionType.Sell);
         UpdateOwnedInstrument(ownedInstrument, -amount);
-
         await SaveChangesOrRollback();
 
         return trade;

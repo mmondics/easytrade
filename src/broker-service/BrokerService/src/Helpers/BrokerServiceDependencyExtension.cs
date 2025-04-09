@@ -14,6 +14,7 @@ using EasyTrade.BrokerService.ProblemPatterns.OpenFeature.Providers;
 using EasyTrade.BrokerService.ProblemPatterns.OpenFeature.Providers.FeatureFlagService;
 using HostInitActions;
 using OpenFeature;
+using EasyTrade.BrokerService.Entities.Trades.Service;
 
 namespace EasyTrade.BrokerService.Helpers;
 
@@ -32,7 +33,9 @@ public static class BrokerServiceDependencyExtension
             .AddPriceDependency()
             .AddProductDependency()
             .AddTradesDependency()
-            .AddProblemPatternsDependency();
+            .AddProblemPatternsDependency()
+            .AddFraudDetectionClient();
+
         return services;
     }
 
@@ -74,6 +77,12 @@ public static class BrokerServiceDependencyExtension
         services
             .AddAsyncServiceInitialization()
             .AddInitAction<IPluginManager>(async (service) => await service.InitializeAsync());
+        return services;
+    }
+
+    private static IServiceCollection AddFraudDetectionClient(this IServiceCollection services)
+    {
+        services.AddHttpClient<IFraudDetectionClient, FraudDetectionClient>();
         return services;
     }
 }
