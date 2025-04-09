@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: engine
+spec:
+  selector:
+    matchLabels:
+      app: engine
+  template:
+    metadata:
+      labels:
+        app: engine
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: s390x
+      containers:
+        - name: engine
+          image: quay.io/mmondics/easytrade-engine:v2-s390x
+          ports:
+            - containerPort: 8080
+          env:
+            - name: BROKER_HOSTANDPORT
+              value: "broker-service:8080"
+            - name: PROXY_PREFIX
+              value: "engine"
+          resources:
+            requests:
+              cpu: 10m
+              memory: 450Mi
+            limits:
+              memory: 450Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: engine
+spec:
+  type: ClusterIP
+  selector:
+    app: engine
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

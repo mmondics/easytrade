@@ -50,6 +50,8 @@ oc new-project easytrade
 oc -n easytrade adm policy add-scc-to-user anyuid -z default
 
 # then use the manifests to deploy
+# use 'release-multiarch' to deploy to either s390x or amd64
+# use 'release-mixed-arch' to deploy to a clustesr that includes both s390x and amd64
 oc -n easytrade apply -f ./kubernetes-manifests/release-multiarch
 
 # Optional: if you want the problem patterns to be automatically
