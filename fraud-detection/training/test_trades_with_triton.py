@@ -1,8 +1,12 @@
+import os
 import requests
 import json
 
-# Triton inference endpoint
-# TRITON_URL = "http://<your_hostname>/v2/models/fraud_ensemble/infer"
+# Triton inference endpoint from environment variable
+TRITON_ENDPOINT = os.getenv("TRITON_ENDPOINT")
+
+if not TRITON_ENDPOINT:
+    raise ValueError("TRITON_ENDPOINT environment variable is not set.")
 
 # Example test cases with varying levels of suspicion
 test_cases = [
@@ -44,7 +48,7 @@ def send_inference(trade_data):
             }
         ]
     }
-    response = requests.post(TRITON_URL, headers={"Content-Type": "application/json"}, json=payload)
+    response = requests.post(TRITON_ENDPOINT, headers={"Content-Type": "application/json"}, json=payload)
     return response.json()
 
 # Run all test cases
