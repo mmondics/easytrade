@@ -24,7 +24,7 @@ spec:
       containers:
         - name: broker-service
           # image: quay.io/mmondics/easytrade-broker-service:1.0.1
-          image: quay.io/mmondics/easytrade-broker-service:2.0.3-s390x-test
+          image: quay.io/mmondics/easytrade-broker-service:2.0.5-test
           ports:
             - containerPort: 8080
           env:

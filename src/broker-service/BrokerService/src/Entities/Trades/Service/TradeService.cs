@@ -113,7 +113,7 @@ public class TradeService(
                 isBuy: true
             );
 
-            _logger.LogInformation("Fraud score for BuyAssets: {score}", fraudScore);
+            _logger.LogInformation("🧠 Fraud score for BuyAssets: {score}", fraudScore);
         }
 
         await _tradeRepository.BeginTransaction();
@@ -173,7 +173,7 @@ public class TradeService(
                 isBuy: false
             );
 
-            _logger.LogInformation("Fraud score for SellAssets: {score}", fraudScore);
+            _logger.LogInformation("🧠 Fraud score for SellAssets: {score}", fraudScore);
         }
 
         await _tradeRepository.BeginTransaction();

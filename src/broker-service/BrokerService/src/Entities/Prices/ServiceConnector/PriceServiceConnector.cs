@@ -33,7 +33,7 @@ namespace EasyTrade.BrokerService.Entities.Prices.ServiceConnector
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var rawJson = await response.Content.ReadAsStringAsync();
-                _logger.LogWarning("Raw JSON (by instrument ID): {json}", rawJson);
+                // _logger.LogWarning("Raw JSON (by instrument ID): {json}", rawJson);
 
                 var options = new JsonSerializerOptions
                 {
@@ -44,7 +44,7 @@ namespace EasyTrade.BrokerService.Entities.Prices.ServiceConnector
                 var pricesResult = JsonSerializer.Deserialize<PricesResultDto>(rawJson, options);
                 var prices = (pricesResult?.Results ?? []).Select(dto => dto.ToEntity()).ToList();
 
-                _logger.LogWarning("Deserialized prices: {prices}", prices.ToJson());
+                // _logger.LogWarning("Deserialized prices: {prices}", prices.ToJson());
                 return prices;
             }
 
@@ -64,7 +64,7 @@ namespace EasyTrade.BrokerService.Entities.Prices.ServiceConnector
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var rawJson = await response.Content.ReadAsStringAsync();
-                _logger.LogWarning("Raw JSON (latest): {json}", rawJson);
+                // _logger.LogWarning("Raw JSON (latest): {json}", rawJson);
 
                 var options = new JsonSerializerOptions
                 {
@@ -75,7 +75,7 @@ namespace EasyTrade.BrokerService.Entities.Prices.ServiceConnector
                 var pricesResult = JsonSerializer.Deserialize<PricesResultDto>(rawJson, options);
                 var prices = (pricesResult?.Results ?? []).Select(dto => dto.ToEntity()).ToList();
 
-                _logger.LogWarning("Deserialized prices: {prices}", prices.ToJson());
+                // _logger.LogWarning("Deserialized prices: {prices}", prices.ToJson());
                 return prices;
             }
 
