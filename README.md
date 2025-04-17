@@ -2,6 +2,18 @@
 
 Sample stock trading application modified to run on both Intel/x86 (amd64) architecture as well as IBM LinuxONE (s390x).
 
+## Fraud Detection
+This version of easytrade has been modified to enable fraud detection with the IBM LinuxONE on-chip AI Accelerator. If enabled, each buy and sell request made through the easytrade frontend GUI or an API call will receive a fraud score between 0 and 1 from an Nvidia Triton Inference Server.
+
+See the [fraud-detection README](/fraud-detection/) for instructions and more information.
+
+Buy example: 
+
+```
+[16/04/25 03:44:48 | Information] Sending payload to Triton at http://svc-triton-accelerated-easytrade.local/v2/models/fraud_ensemble/infer: {"inputs":[{"name":"raw_input","shape":[1,9],"datatype":"FP32","data":[6,1,1,1,159.33264,159.33264,3,3,1]}]} | FraudDetectionClient
+[16/04/25 03:44:48 | Information] 🧠 Fraud score for BuyAssets: 0.7734375 | Entities.Trades.Service.TradeService
+```
+
 ## Architecture diagram
 
 ![EasyTrade architecture](./img/architecture.jpg)
