@@ -143,7 +143,7 @@ oc -n easytrade apply -f servicemonitor.yaml
 
 You should now be able to see the Triton metrics in the OpenShift metrics (Prometheus) page. For example, the following query will display the Inference Time by Model in microseconds: 
 
-`sum(rate(nv_inference_compute_infer_duration_us[30s])) by (model)`
+`(sum(rate(nv_inference_compute_infer_duration_us[30s])) by (model))/(sum(rate(nv_inference_request_success[30s])) by (model))`
 
 ![triton-metrics](../images/triton-metrics-ocp.png)
 
