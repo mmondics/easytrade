@@ -55,7 +55,9 @@ curl -kv $TRITON_ENDPOINT/v2/models/fraud_model/ready
 By default, fraud detection is deactivated for the [easytrade broker-service](/src/broker-service/). With the Triton Inference Server deployed and showing ready with a 200 status call, you can activate fraud detection for each request to buy or sell an instrument.
 
 For the broker-service deployment, set the `ENABLE_FRAUD_DETECTION` environment variable to `true`.
-Also set the `TRITON_FRAUD_URL` environment variable to `http://<your_triton_hostname>/v2/models/fraud_ensemble/infer`
+Also set the `TRITON_FRAUD_URL` environment variable to `http://<your_triton_hostname>/v2/models/fraud_model/versions/1/infer`
+
+> Note: If you'd prefer to use the the fraud_ensemble model which offloads preprocessing to the Triton Inference Server, set the `TRITON_FRAUD_URL` environment variable to `http://<your_triton_hostname>/v2/models/fraud_ensemble/infer` and make sure you're using container image `quay.io/mmondics/easytrade-broker-service:2.0.0-fraud-ensemble` in the [broker-service deployment](/kubernetes-manifests/release-multiarch/broker-service.yaml).
 
 ```
 # Set the TRITON_FRAUD_URL environment variable

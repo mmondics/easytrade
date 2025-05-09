@@ -50,6 +50,9 @@ builder.Services.AddScoped<ITradeRepository, TradeRepository>();
 builder.Services.AddTransient<HighCpuUsageMiddleware>();
 builder.Services.AddHttpClient();
 
+builder.Services.AddSingleton<BrokerService.Services.Preprocessing.FraudPreprocessor>();
+builder.Services.AddTransient<IFraudDetectionClient, FraudDetectionClient>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

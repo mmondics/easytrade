@@ -23,8 +23,9 @@ spec:
     spec:
       containers:
         - name: broker-service
-          # image: quay.io/mmondics/easytrade-broker-service:1.0.1
-          image: quay.io/mmondics/easytrade-broker-service:2.0.5-test
+          # tag 2.0.0-fraud-ensemble uses triton ensemble. use TRITON_FRAUD_URL = .../v2/models/fraud_ensemble/infer
+          # tag 2.0.0-fraud-model calls the model directly with preprocessing done within broker service. Does not use triton ensemble. use TRITON_FRAUD_URL = .../v2/models/fraud_model/versions/1/infer
+          image: quay.io/mmondics/easytrade-broker-service:2.0.0-fraud-ensemble
           ports:
             - containerPort: 8080
           env:
