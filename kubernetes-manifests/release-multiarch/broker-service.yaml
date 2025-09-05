@@ -23,8 +23,11 @@ spec:
     spec:
       containers:
         - name: broker-service
+          # tag 1.0.0 does not call a fraud detection model.
           # tag 2.0.0-fraud-ensemble uses triton ensemble. use TRITON_FRAUD_URL = .../v2/models/fraud_ensemble/infer
           # tag 2.0.0-fraud-model calls the model directly with preprocessing done within broker service. Does not use triton ensemble. use TRITON_FRAUD_URL = .../v2/models/fraud_model/versions/1/infer
+          # image: quay.io/mmondics/easytrade-broker-service:1.0.0
+          # image: quay.io/mmondics/easytrade-broker-service:2.0.0-fraud-model
           image: quay.io/mmondics/easytrade-broker-service:2.0.0-fraud-ensemble
           ports:
             - containerPort: 8080
@@ -34,6 +37,10 @@ spec:
                 configMapKeyRef:
                   name: connection-strings
                   key: DOTNET_CONNECTION_STRING
+            - name: ENABLE_FRAUD_DETECTION
+              value: 'true'
+            - name: TRITON_FRAUD_URL
+              value: 'http://svc-triton-accelerated-easytrade.apps.atsocpd1.dmz/v2/models/fraud_ensemble/infer'
           envFrom:
             - configMapRef:
                 name: broker-service-envs

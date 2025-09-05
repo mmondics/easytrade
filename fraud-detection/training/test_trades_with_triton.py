@@ -28,7 +28,7 @@ test_cases = [
     },
     {
         "desc": "Trade with high quantity but low value",
-        "data": [7.0, 5.0, 0.0, 10000.0, 0.2, 2000.0, 12.0, 0.0, 1.0]
+        "data": [7.0, 5.0, 0.0, 10000.0, 0.2, 2000.0, 23.0, 0.0, 1.0]
     },
     {
         "desc": "High value failed trade",
